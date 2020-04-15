@@ -1,0 +1,30 @@
+#: import utils kivy.utils
+
+<HomeScreen>:
+	FloatLayout:
+		canvas:
+			Color: 
+				rgb: utils.get_color_from_hex("#398BF2")
+			Rectangle:
+				size: self.size
+				pos: self.size
+		GridLayout:
+			pos_hint: {"top": 1, "left": 1}
+			size_hint: 1, .7
+			#Coloque a imagem da câmera aqui
+
+
+		GridLayout:
+
+			cols: 2
+			pos_hint: {"down": 1, "left": 1}
+			size_hint: 1, .2
+			ImageButton:
+				id: abre
+				source: "icons/button_abre.jpg"
+				# on_press: self.source"Adicona a imagem precionada"
+				on_release: app.open_gate()
+			ImageButton:
+				id: fecha
+				source: "icons/button_fecha.jpg"
+				on_release: app.close_gate()
