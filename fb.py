@@ -41,5 +41,21 @@ class Firebase():
 
 		
  
+	def exchange_refresh_token(self, refresh_token):
+		refresh_url = "https://securetoken.googleapis.com/v1/token?key=" + self.wak
+		refresh_payload = '{"grant_type": "refresh_token", "refresh_token": "%s"}' % refresh_token
+		refresh_req = requests.post(refresh_url, data = refresh_payload)
+		#print("Request ok????", refresh_req.ok)
+		#print(refresh_req.json())
+
+		id_token = refresh_req.json()['id_token']
+		local_id = refresh_req.json()['user_id']
+
+
+		return id_token, local_id
+	
+
+
+
 	def sign_in(self):
 		pass

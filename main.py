@@ -39,18 +39,30 @@ class LabelButton(ButtonBehavior, Label):
 
 GUI = Builder.load_file("main.kv")
 class MainApp(App):
-	id = 1   #trocar pelo login 
 	def build(self):
 		self.my_firebase = Firebase()
 		return GUI
 
 	def on_start(self):
-		# Get database data
-		results = requests.get("https://gate-app-4d436.firebaseio.com/"+ str(self.id)+".json")
-		data = json.loads(results.content.decode())
-		gate = data['gate']
-		print("data has been found", data)
-		pass
+		
+		# try to read the permisten signin credentials (refresh token)
+		try:
+			with open("refresh_token.txt", "r") as f:
+				refresh_token = f.read()
+
+			# Use refresh token to get a new idToken
+			id_token, local_id = self.my_firebase.exchange_refresh_token(refresh_token)
+
+
+			# Get database data
+			results = requests.get("https://gate-app-4d436.firebaseio.com/"+ local_id +".json?auth=" + id_token)
+			data = json.loads(results.content.decode())
+			gate = data['gate']
+
+			self.change_screen("home_screen")
+		
+		except:
+			pass
 
 	def change_screen(self, screen_name):
 		# Get the screen manager from the kv file
