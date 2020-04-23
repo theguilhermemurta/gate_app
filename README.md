@@ -14,7 +14,8 @@ _ Controle Infra
 
 ### Login
 
-O login poderá ser feito com contas google, facebook ou conta do próprio app
+O login poderá ser feito com contas google, facebook ou conta do próprio app (número de telefone)
+login será feito automaticamente após o primeiro
 
 ### Menu
 

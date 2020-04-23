@@ -29,6 +29,8 @@ class SettingScreen(Screen):
 	pass
 class LoginScreen(Screen):
 	pass	
+class CreateScreen(Screen):
+	pass
 class ImageButton(ButtonBehavior, Image):
 	pass
 class LabelButton(ButtonBehavior, Label):
@@ -53,13 +55,15 @@ class MainApp(App):
 			# Use refresh token to get a new idToken
 			id_token, local_id = self.my_firebase.exchange_refresh_token(refresh_token)
 
-
+	
 			# Get database data
 			results = requests.get("https://gate-app-4d436.firebaseio.com/"+ local_id +".json?auth=" + id_token)
 			data = json.loads(results.content.decode())
 			gate = data['gate']
+			name = data['name']
 
 			self.change_screen("home_screen")
+
 		
 		except:
 			pass

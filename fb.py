@@ -7,7 +7,7 @@ class Firebase():
 
 	wak = "AIzaSyA1bZHAQQ5p2ME459ILNpg1I6E0llGau78" # Web API Key
 
-	def sign_up(self, email, password):
+	def sign_up(self, name, email, password):
 		app = App.get_running_app()
 		# Send email and password to Firebase
 		# Firebase will return localID, authToken (your autorization, expire in 1 hour), refreshToken (use to get a new authToken)	
@@ -29,7 +29,8 @@ class Firebase():
 			app.id_token = idToken
 			# Create new key in database from localID
 			# Get gate IP
-			my_data = '{"gate": "192.168.0.1"}' #it has to be a string
+			my_data = '{"name": "%s", "gate": "0"}' % name  #it has to be a string
+			print(my_data)
 			requests.patch("https://gate-app-4d436.firebaseio.com/" + localId + ".json?auth=" + idToken, data = my_data)
 
 			app.change_screen("home_screen")

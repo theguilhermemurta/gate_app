@@ -1,7 +1,7 @@
 <LoginScreen>
 	canvas:
 		Color:
-			rgb: utils.get_color_from_hex("#FFA500")
+			rgb: utils.get_color_from_hex("#FFFFFF")
 		Rectangle:
 			size: self.size
 			pos: self.pos
@@ -9,11 +9,13 @@
 	FloatLayout:
 		TextInput:
 			id: login_email
+			multiline: False
 			hint_text: "e-mail"
 			size_hint: .8,.1
 			pos_hint: {"top": .9, "right": .9}
 		TextInput:
 			id: login_password
+			multiline: False
 			password: True
 			hint_text: "password"
 			size_hint: .8,.1
@@ -23,17 +25,35 @@
 			color: (1,0,0,1)
 			size_hint: .8,.1
 			pos_hint: {"top": .4, "right": .9}
-		LabelButton:
-			canvas.before:
-				Color:
-					rgb: utils.get_color_from_hex("#FFA500") if self.state == 'normal' else utils.get_color_from_hex("#FF8C00")
-				Rectangle:
-					size: self.size
-					pos: self.pos
-			text: "[u]Sing up![/u]"
-			markup: True
-			size_hint: .8, .1
-			pos_hint: {"top": .2, "right": .9}
-			on_release:
-				app.my_firebase.sign_up(login_email.text, login_password.text)
-				print("sing up!", login_email.text, login_password.text)
+		
+		GridLayout:
+			cols: 2
+			pos_hint: {"down": 1, "left": 1}
+			size_hint: 1, .2
+			LabelButton:
+				canvas.before:
+					Color:
+						rgb: utils.get_color_from_hex("#FFA500") if self.state == 'normal' else utils.get_color_from_hex("#FF8C00")
+					Rectangle:
+						size: self.size
+						pos: self.pos
+				text: "[u]Criar conta![/u]"
+				markup: True
+				size_hint: .4, .1
+				pos_hint: {"top": .2, "left": .9}
+				on_release:
+					app.change_screen("create_screen")
+			LabelButton:
+				canvas.before:
+					Color:
+						rgb: utils.get_color_from_hex("#FFA500") if self.state == 'normal' else utils.get_color_from_hex("#FF8C00")
+					Rectangle:
+						size: self.size
+						pos: self.pos
+				text: "[u]Sing in![/u]"
+				markup: True
+				size_hint: .4, .1
+				pos_hint: {"top": .2, "left": .9}
+				on_release:
+					app.my_firebase.sign_up(login_email.text, login_password.text)
+					print("sing up!", login_email.text, login_password.text)

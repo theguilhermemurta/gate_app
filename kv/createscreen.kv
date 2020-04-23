@@ -1,0 +1,45 @@
+<CreateScreen>
+	canvas:
+		Color:
+			rgb: utils.get_color_from_hex("#FFFFFF")
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+	FloatLayout:
+		TextInput:
+			id: name
+			hint_text: "Nome completo"
+			multiline: False
+			size_hint: .6, .1
+			pos_hint: {"top": .85, "right": .80}
+
+		TextInput:
+			id: email
+			hint_text: "e-mail"
+			multiline: False
+			size_hint: .6, .1
+			pos_hint: {"top": .65, "right": .80}
+
+		TextInput:
+			id: password
+			hint_text: "senha"
+			password: True
+			multiline: False
+			size_hint: .6, .1
+			pos_hint: {"top": .45, "right": .80}
+
+		LabelButton:
+			canvas.before:
+				Color:
+					rgb: utils.get_color_from_hex("#FFA500") if self.state == 'normal' else utils.get_color_from_hex("#FF8C00")
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			text: "[u]Criar conta![/u]"
+			markup: True
+			size_hint: .3, .1
+			pos_hint: {"top": .2, "right": .65}
+			on_release:
+				app.my_firebase.sign_up(name.text, email.text, password.text)
+				print("Conta criada!", email.text, password.text)
