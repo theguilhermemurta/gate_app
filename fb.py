@@ -35,7 +35,7 @@ class Firebase():
 
 			app.change_screen("home_screen")
 
-		if signup_request.ok == False:
+		elif signup_request.ok == False:
 			error_data = json.loads(signup_request.content.decode())
 			error_message = error_data["error"]["message"]
 			app.root.ids['login_screen'].ids['login_message'].text = error_message
@@ -58,5 +58,28 @@ class Firebase():
 
 
 
-	def sign_in(self):
-		pass
+	def sign_in(self, email, password):
+		app = App.get_running_app()
+		signin_url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=" + self.wak
+		signin_payload = {"email": email, "password": password, "returnSecureToken": True}
+		signin_request = requests.post(signin_url, data = signin_payload)
+		sign_in_data = json.loads(signin_request.content.decode())
+
+		if signin_request.ok == True:
+			refresh_token = sign_in_data['refreshToken']
+			localId = sign_in_data['localId']
+			idToken = sign_in_data['idToken']
+			# Save refreshToken to a file
+			with open("refresh_token.txt", "w") as f:
+				f.write(refresh_token)
+			# Save localId to a variable in main app class
+			app.local_id = localId
+			# Save idToken to a variable in main app class
+			app.id_token = idToken
+
+			app.change_screen("home_screen")
+
+		elif signin_request.ok == False:
+			error_data = json.loads(signin_request.content.decode())
+			error_message = error_data["error"]["message"]
+			app.root.ids['login_screen'].ids['login_message'].text = error_message

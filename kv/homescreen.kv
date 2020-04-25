@@ -1,30 +1,54 @@
+#: include kv/contentnavigationdrawer.kv
+#: include kv/itemdrawer.kv
 #: import utils kivy.utils
 
 <HomeScreen>:
-	FloatLayout:
-		canvas:
-			Color: 
-				rgb: utils.get_color_from_hex("#FFFFFF")
-			Rectangle:
-				size: self.size
-				pos: self.pos
-		GridLayout:
-			pos_hint: {"top": 1, "left": 1}
-			size_hint: 1, .7
-			#Coloque a imagem da câmera aqui
+
+	Screen:
+
+	    NavigationLayout:
+
+	        ScreenManager:
+
+	            Screen:
+
+	        		FloatLayout:
+
+						GridLayout:
+							cols: 1
+							size_hint: 1,.8
+							pos_hint: {"top": 1, "right": 1}
+							MDToolbar:
+		                        title: "Gate App"
+		                        elevation: 10
+		                        left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
+		                    BoxLayout:
+		                    	
 
 
-		GridLayout:
+						GridLayout:
 
-			cols: 2
-			pos_hint: {"down": 1, "left": 1}
-			size_hint: 1, .2
-			ImageButton:
-				id: abre
-				source: "icons/button_abre.jpg"
-				# on_press: self.source"Adicona a imagem precionada"
-				on_release: app.open_gate()
-			ImageButton:
-				id: fecha
-				source: "icons/button_fecha.jpg"
-				on_release: app.close_gate()
+							cols: 2
+							pos_hint: {"down": 1, "left": 1}
+							size_hint: 1, .2
+							ImageButton:
+								id: abre
+								source: "icons/button_abre.jpg"
+								# on_press: self.source"Adicona a imagem precionada"
+								on_release: app.open_gate()
+							ImageButton:
+								id: fecha
+								source: "icons/button_fecha.jpg"
+								on_release: app.close_gate()    
+
+
+	        MDNavigationDrawer:
+	            id: nav_drawer
+	            
+	            ContentNavigationDrawer:
+	            	id: content_drawer
+
+
+		
+
+
