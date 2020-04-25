@@ -9,8 +9,10 @@
 	    NavigationLayout:
 
 	        ScreenManager:
+	        	id: screen_manager_nd
 
 	            Screen:
+	            	name: "gate_camera"
 
 	        		FloatLayout:
 
@@ -40,6 +42,29 @@
 								id: fecha
 								source: "icons/button_fecha.jpg"
 								on_release: app.close_gate()    
+
+				Screen:
+					name: "config"
+
+					FloatLayout:
+
+						GridLayout:
+							cols: 1
+							size_hint: 1,.8
+							pos_hint: {"top": 1, "right": 1}
+							MDToolbar:
+		                        title: "Gate App"
+		                        elevation: 10
+		                        left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
+		                    
+						TextInput:
+							id: gate
+							hint_text: "Número do gate"
+							multiline: False
+							size_hint: .6, .1
+							pos_hint: {"top": .60, "right": .80}
+							
+
 
 
 	        MDNavigationDrawer:

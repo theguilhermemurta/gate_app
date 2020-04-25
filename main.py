@@ -28,19 +28,19 @@ from fb import Firebase
 ##############################################
 
 class HomeScreen(Screen):
-	pass
+    pass
 class SettingScreen(Screen):
-	pass
+    pass
 class LoginScreen(Screen):
-	pass	
+    pass    
 class CreateScreen(Screen):
-	pass
+    pass
 class ImageButton(ButtonBehavior, Image):
-	pass
+    pass
 class LabelButton(ButtonBehavior, Label):
-	pass
+    pass
 class ContentNavigationDrawer(BoxLayout):
-	pass
+    pass
 
 class DrawerList(ThemableBehavior, MDList):
     def set_color_item(self, instance_item):
@@ -53,69 +53,87 @@ class DrawerList(ThemableBehavior, MDList):
                 break
         instance_item.text_color = self.theme_cls.primary_color
 
+
+
+        #self.home_screen.ids.screen_manager_nd.current = instance_item
+
+        
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
+    target = StringProperty()
 
 
 
 
 class MainApp(MDApp):
-	name = ""
-	gate = ""
+    name = ""
+    gate = ""
 
-	def build(self):
-		GUI = Builder.load_file("main.kv")
-		self.my_firebase = Firebase()
-		return GUI
+    def build(self):
+        GUI = Builder.load_file("main.kv")
+        self.my_firebase = Firebase()
+        return GUI
 
-	def on_start(self):
-		
-		# try to read the permisten signin credentials (refresh token)
-		try:
-			with open("refresh_token.txt", "r") as f:
-				refresh_token = f.read()
+    def openScreen(self, itemdrawer):
+        self.openScreenName(itemdrawer.target)
+        self.root.ids.home_screen.ids.nav_drawer.set_state("close")
 
-			# Use refresh token to get a new idToken
-			id_token, local_id = self.my_firebase.exchange_refresh_token(refresh_token)
-
-	
-			# Get database data
-			results = requests.get("https://gate-app-4d436.firebaseio.com/"+ local_id +".json?auth=" + id_token)
-			data = json.loads(results.content.decode())
-			self.gate = data['gate']
-			self.name = data['name']
-
-			self.root.ids.home_screen.ids.content_drawer.ids.drawerlogo.text = str(self.name) ########################################
-
-			icons_item = {
-				"folder": "My files",
-				"account-multiple": "Share with me",
-				"star": "Starred",
-				"history": "Recent",
-				"checkbox-marked": "Shared with me",
-				"upload": "Upload",
-			}
-			for icon_name in icons_item.keys():
-				self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(ItemDrawer(icon=icon_name, text = icons_item[icon_name]))
-			self.change_screen("home_screen")
+    def openScreenName(self, screenName):
+        self.root.ids.home_screen.ids.screen_manager_nd.current = screenName
 
 
-			
-		except:
-			pass
+    def on_start(self):
+        
+        # try to read the permisten signin credentials (refresh token)
+        try:
+            with open("refresh_token.txt", "r") as f:
+                refresh_token = f.read()
 
-	def change_screen(self, screen_name):
-		# Get the screen manager from the kv file
-		# root representa o "pai" no arquivo kv
-		screen_manager = self.root.ids['screen_manager']
-		# modificando a tela atual para setting
-		screen_manager.current = screen_name
+            # Use refresh token to get a new idToken
+            id_token, local_id = self.my_firebase.exchange_refresh_token(refresh_token)
 
-	def open_gate(self):
-		print("Abrir")
+    
+            # Get database data
+            results = requests.get("https://gate-app-4d436.firebaseio.com/"+ local_id +".json?auth=" + id_token)
+            data = json.loads(results.content.decode())
+            self.gate = data['gate']
+            self.name = data['name']
 
-	def close_gate(self):
-		print("Fechar")
+            # Navigation Drawer
+
+            self.root.ids.home_screen.ids.content_drawer.ids.drawerlogo.text = str(self.name)
+            
+            self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
+                ItemDrawer(target="gate_camera", text="Portão",
+                       icon="star",
+                       on_release=self.openScreen)
+            )
+
+            self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
+                ItemDrawer(target="config", text="Configurações",
+                        icon="settings-outline",
+                        on_release=self.openScreen)
+            )
+
+            self.change_screen("home_screen")
+
+
+            
+        except:
+            pass
+
+    def change_screen(self, screen_name):
+        # Get the screen manager from the kv file
+        # root representa o "pai" no arquivo kv
+        screen_manager = self.root.ids['screen_manager']
+        # modificando a tela atual para setting
+        screen_manager.current = screen_name
+
+    def open_gate(self):
+        print("Abrir")
+
+    def close_gate(self):
+        print("Fechar")
 
 
 ##############################################
@@ -133,4 +151,4 @@ class MainApp(MDApp):
 
 
 if __name__ == '__main__':
-	MainApp().run()
+    MainApp().run()
