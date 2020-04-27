@@ -70,6 +70,7 @@ class MainApp(MDApp):
     gate = ""
 
     def build(self):
+        self.theme_cls.primary_palette = "DeepOrange"
         GUI = Builder.load_file("main.kv")
         self.my_firebase = Firebase()
         return GUI
@@ -81,6 +82,21 @@ class MainApp(MDApp):
     def openScreenName(self, screenName):
         self.root.ids.home_screen.ids.screen_manager_nd.current = screenName
 
+    def loadNdIcons(self, name):
+        print("ESTAMOS AQUI")
+        self.root.ids.home_screen.ids.content_drawer.ids.drawerlogo.text = name     
+
+        self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
+            ItemDrawer(target="gate_camera", text="Portão",
+                   icon="star",
+                   on_release=self.openScreen)
+        )
+
+        self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
+            ItemDrawer(target="config", text="Configurações",
+                    icon="settings-outline",
+                    on_release=self.openScreen)
+        )
 
     def on_start(self):
         
@@ -91,30 +107,17 @@ class MainApp(MDApp):
 
             # Use refresh token to get a new idToken
             id_token, local_id = self.my_firebase.exchange_refresh_token(refresh_token)
-
     
             # Get database data
             results = requests.get("https://gate-app-4d436.firebaseio.com/"+ local_id +".json?auth=" + id_token)
             data = json.loads(results.content.decode())
-            self.gate = data['gate']
-            self.name = data['name']
+            gate = data['gate']
+            name = data['name']
 
-            # Navigation Drawer
+             # Navigation Drawer
+            self.loadNdIcons(name)
 
-            self.root.ids.home_screen.ids.content_drawer.ids.drawerlogo.text = str(self.name)
-            
-            self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
-                ItemDrawer(target="gate_camera", text="Portão",
-                       icon="star",
-                       on_release=self.openScreen)
-            )
-
-            self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
-                ItemDrawer(target="config", text="Configurações",
-                        icon="settings-outline",
-                        on_release=self.openScreen)
-            )
-
+           
             self.change_screen("home_screen")
 
 

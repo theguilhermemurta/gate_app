@@ -30,30 +30,14 @@
 			cols: 2
 			pos_hint: {"down": 1, "left": 1}
 			size_hint: 1, .2
-			LabelButton:
-				canvas.before:
-					Color:
-						rgb: utils.get_color_from_hex("#FFA500") if self.state == 'normal' else utils.get_color_from_hex("#FF8C00")
-					Rectangle:
-						size: self.size
-						pos: self.pos
-				text: "[u]Criar conta![/u]"
-				markup: True
-				size_hint: .4, .1
+			MDRaisedButton:
+				text: "Criar conta"
 				pos_hint: {"top": .2, "left": .9}
 				on_release:
 					app.change_screen("create_screen")
-			LabelButton:
-				canvas.before:
-					Color:
-						rgb: utils.get_color_from_hex("#FFA500") if self.state == 'normal' else utils.get_color_from_hex("#FF8C00")
-					Rectangle:
-						size: self.size
-						pos: self.pos
-				text: "[u]Sign in![/u]"
-				markup: True
-				size_hint: .4, .1
-				pos_hint: {"top": .2, "left": .9}
+			MDRaisedButton:
+				text: "Sign in"
+				pos_hint: {"top": .2, "left": .3}
 				on_release:
 					app.my_firebase.sign_in(login_email.text, login_password.text)
 					print("sing in!", login_email.text, login_password.text)

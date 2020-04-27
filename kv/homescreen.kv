@@ -63,6 +63,14 @@
 							multiline: False
 							size_hint: .6, .1
 							pos_hint: {"top": .60, "right": .80}
+
+						MDRaisedButton:
+							id: gate_button
+							text: "Confirmar"
+							on_release: 
+								app.my_firebase.gate_config(gate.text)
+								print("Configurando o Portão!")
+
 							
 
 
