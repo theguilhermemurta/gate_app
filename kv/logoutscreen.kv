@@ -1,0 +1,32 @@
+
+<LogOutScreen>
+	name: "logout"
+
+		FloatLayout:
+
+			GridLayout:
+				cols: 1
+				size_hint: 1,.8
+				pos_hint: {"top": 1, "right": 1}
+				MDToolbar:
+                    title: "Gate App"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
+                
+			Label:
+				text: "Deseja sair?"
+				size_hint: .6, .1
+				pos_hint: {"top": .60, "right": .80}
+
+			MDRaisedButton:
+				id: yes_logout
+				text: "SIM"
+				on_release: 
+					app.my_firebase.log_out()
+					print("Log Out")
+			MDRaisedButton:
+				id: no_logout
+				text: "NÃO"
+				on_release: 
+					app.my_firebase.gate_config(gate.text)
+					print("Configurando o Portão!")

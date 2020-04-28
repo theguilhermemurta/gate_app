@@ -1,5 +1,6 @@
 import requests 
 import json
+import os
 
 from kivy.app import App
 
@@ -16,26 +17,35 @@ class Firebase():
         signup_request = requests.post(signup_url, data = signup_payload)
         sign_up_data = json.loads(signup_request.content.decode())
 
+
         if signup_request.ok == True:
+
             refresh_token = sign_up_data['refreshToken']
             localId = sign_up_data['localId']
             idToken = sign_up_data['idToken']
+
             # Save refreshToken to a file
             with open("refresh_token.txt", "w") as f:
                 f.write(refresh_token)
+
             # Save localId to a variable in main app class
             app.local_id = localId
             # Save idToken to a variable in main app class
             app.id_token = idToken
+
             # Create new key in database from localID
             # Get gate IP
             my_data = '{"name": "%s", "gate": "0"}' % name  #it has to be a string
             print(my_data)
             requests.patch("https://gate-app-4d436.firebaseio.com/" + localId + ".json?auth=" + idToken, data = my_data)
+
+            #Create Navigation Drawer
             app.loadNdIcons(name)
+
             app.change_screen("home_screen")
 
         elif signup_request.ok == False:
+            # Print in a label the error massage
             error_data = json.loads(signup_request.content.decode())
             error_message = error_data["error"]["message"]
             app.root.ids['login_screen'].ids['login_message'].text = error_message
@@ -69,17 +79,25 @@ class Firebase():
             refresh_token = sign_in_data['refreshToken']
             localId = sign_in_data['localId']
             idToken = sign_in_data['idToken']
+
             # Save refreshToken to a file
             with open("refresh_token.txt", "w") as f:
                 f.write(refresh_token)
+
             # Save localId to a variable in main app class
-            app.local_id = localId
             # Save idToken to a variable in main app class
+            app.local_id = localId
             app.id_token = idToken
 
+            results = requests.get("https://gate-app-4d436.firebaseio.com/"+ localId +".json?auth=" + idToken)
+            data = json.loads(results.content.decode())
+            gate = data['gate']
+            name = data['name']
+            app.loadNdIcons(name)
             app.change_screen("home_screen")
 
         elif signin_request.ok == False:
+            # print in a label the error message
             error_data = json.loads(signin_request.content.decode())
             error_message = error_data["error"]["message"]
             app.root.ids['login_screen'].ids['login_message'].text = error_message
@@ -96,11 +114,24 @@ class Firebase():
             results = requests.get("https://gate-app-4d436.firebaseio.com/"+ local_id +".json?auth=" + id_token)
             data = json.loads(results.content.decode())
             name = data['name']
-
             my_data = '{"name": "%s", "gate": "%s"}' %(name, gate)
+            print(id_token)
+            print(local_id)
             sent_req = requests.patch("https://gate-app-4d436.firebaseio.com/" + local_id + ".json?auth=" + id_token, data = my_data)
+            print(sent_req)
             print(json.loads(sent_req.content.decode()))
             
         except:
             print("FAILED")
             pass
+
+    def log_out(self):
+        app = App.get_running_app()
+        try:
+            with open("refresh_token.txt", "w") as f:
+                f.write("")
+            print("ESTOU AQUI")
+            app.change_screen("login_screen")
+        except: 
+            print("FAILED IN LOGOUT")
+

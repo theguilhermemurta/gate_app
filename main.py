@@ -32,7 +32,9 @@ class HomeScreen(Screen):
 class SettingScreen(Screen):
     pass
 class LoginScreen(Screen):
-    pass    
+    pass  
+class LogOutScreen(Screen):
+    pass  
 class CreateScreen(Screen):
     pass
 class ImageButton(ButtonBehavior, Image):
@@ -41,6 +43,8 @@ class LabelButton(ButtonBehavior, Label):
     pass
 class ContentNavigationDrawer(BoxLayout):
     pass
+
+
 
 class DrawerList(ThemableBehavior, MDList):
     def set_color_item(self, instance_item):
@@ -57,6 +61,7 @@ class DrawerList(ThemableBehavior, MDList):
 
         #self.home_screen.ids.screen_manager_nd.current = instance_item
 
+
         
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
@@ -69,34 +74,52 @@ class MainApp(MDApp):
     name = ""
     gate = ""
 
+
+
     def build(self):
         self.theme_cls.primary_palette = "DeepOrange"
         GUI = Builder.load_file("main.kv")
         self.my_firebase = Firebase()
         return GUI
 
+
+
     def openScreen(self, itemdrawer):
         self.openScreenName(itemdrawer.target)
         self.root.ids.home_screen.ids.nav_drawer.set_state("close")
 
+
+
     def openScreenName(self, screenName):
         self.root.ids.home_screen.ids.screen_manager_nd.current = screenName
 
+
+
     def loadNdIcons(self, name):
-        print("ESTAMOS AQUI")
+        #Adds the logo and the name of the user in the Navigation Drawer
         self.root.ids.home_screen.ids.content_drawer.ids.drawerlogo.text = name     
 
+
+        # Adds the buttons in the Navigation Drawer to access the screens
+        # Home Screen
         self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
             ItemDrawer(target="gate_camera", text="Portão",
                    icon="star",
                    on_release=self.openScreen)
         )
-
+        # Config Screen
         self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
             ItemDrawer(target="config", text="Configurações",
                     icon="settings-outline",
                     on_release=self.openScreen)
         )
+        # Logout Screen
+        self.root.ids.home_screen.ids.content_drawer.ids.md_list.add_widget(
+            ItemDrawer(target="sair", text="Logout",
+                    icon="settings-outline",
+                    on_release= self.openScreen)
+        )
+
 
     def on_start(self):
         
@@ -114,10 +137,10 @@ class MainApp(MDApp):
             gate = data['gate']
             name = data['name']
 
-             # Navigation Drawer
+             # Create the navigation drawer
             self.loadNdIcons(name)
 
-           
+            # Goes to the home screen
             self.change_screen("home_screen")
 
 
@@ -126,8 +149,8 @@ class MainApp(MDApp):
             pass
 
     def change_screen(self, screen_name):
-        # Get the screen manager from the kv file
-        # root representa o "pai" no arquivo kv
+        # Get the screen manager from the main.kv file
+        # root represents the father of the kv file, in this case is the class MainApp
         screen_manager = self.root.ids['screen_manager']
         # modificando a tela atual para setting
         screen_manager.current = screen_name
