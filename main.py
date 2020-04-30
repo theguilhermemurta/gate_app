@@ -58,16 +58,10 @@ class DrawerList(ThemableBehavior, MDList):
         instance_item.text_color = self.theme_cls.primary_color
 
 
-
-        #self.home_screen.ids.screen_manager_nd.current = instance_item
-
-
         
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
     target = StringProperty()
-
-
 
 
 class MainApp(MDApp):
@@ -130,7 +124,7 @@ class MainApp(MDApp):
 
             # Use refresh token to get a new idToken
             id_token, local_id = self.my_firebase.exchange_refresh_token(refresh_token)
-    
+
             # Get database data
             results = requests.get("https://gate-app-4d436.firebaseio.com/"+ local_id +".json?auth=" + id_token)
             data = json.loads(results.content.decode())
@@ -139,12 +133,9 @@ class MainApp(MDApp):
 
              # Create the navigation drawer
             self.loadNdIcons(name)
-
             # Goes to the home screen
             self.change_screen("home_screen")
 
-
-            
         except:
             pass
 
@@ -152,7 +143,7 @@ class MainApp(MDApp):
         # Get the screen manager from the main.kv file
         # root represents the father of the kv file, in this case is the class MainApp
         screen_manager = self.root.ids['screen_manager']
-        # modificando a tela atual para setting
+        # modifying the current screen to the new screen 
         screen_manager.current = screen_name
 
     def open_gate(self):
