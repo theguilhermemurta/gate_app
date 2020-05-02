@@ -16,6 +16,9 @@ from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy.uix.label import Label 
 from kivy.properties import StringProperty
+from kivymd.uix.dialog import MDDialog
+
+
 
 
 from fb import Firebase
