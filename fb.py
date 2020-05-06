@@ -43,7 +43,7 @@ class Firebase():
             error_data = json.loads(signup_request.content.decode())
             error_message = error_data["error"]["message"]
             #app.root.ids['login_screen'].ids['login_message'].text = error_message
-            self.error_massage(error_message)
+            self.error_message(error_message)
 
         
  
@@ -97,7 +97,7 @@ class Firebase():
 
             else:
 
-                app.root.ids['login_screen'].ids['login_message'].text = "Email não verificado"
+                #app.root.ids['login_screen'].ids['login_message'].text = "Email não verificado"
                 self.new_verification_popup(idToken)
 
         else:

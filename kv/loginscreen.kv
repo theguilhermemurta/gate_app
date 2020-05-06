@@ -1,43 +1,50 @@
 <LoginScreen>
-	canvas:
-		Color:
-			rgb: utils.get_color_from_hex("#FFFFFF")
-		Rectangle:
-			size: self.size
-			pos: self.pos
 
 	FloatLayout:
-		TextInput:
+		MDTextField:
 			id: login_email
+			icon_left: "email"
 			multiline: False
 			hint_text: "e-mail"
 			size_hint: .8,.1
-			pos_hint: {"top": .9, "right": .9}
-		TextInput:
+			pos_hint: {"top": .7, "right": .9}
+		MDTextField:
 			id: login_password
 			multiline: False
 			password: True
-			hint_text: "password"
+			hint_text: "senha"
 			size_hint: .8,.1
-			pos_hint: {"top": .7, "right": .9}
-		Label:
-			id: login_message
-			color: (1,0,0,1)
-			size_hint: .8,.1
-			pos_hint: {"top": .4, "right": .9}
+			pos_hint: {"top": .6, "right": .9}
+
 		
-		GridLayout:
-			cols: 2
-			pos_hint: {"down": 1, "left": 1}
-			size_hint: 1, .2
-			MDRaisedButton:
-				text: "Criar conta"
-				pos_hint: {"top": .2, "left": .9}
-				on_release:
-					app.change_screen("create_screen")
-			MDRaisedButton:
-				text: "Sign in"
-				pos_hint: {"top": .2, "left": .3}
-				on_release:
-					app.my_firebase.sign_in(login_email.text, login_password.text)
-					print("sing in!", login_email.text, login_password.text)
+
+		MDRaisedButton:
+			text: "Entrar"
+			pos_hint: {"top": .5, "right": .9}
+			size_hint: .8,.08
+			on_release:
+				app.my_firebase.sign_in(login_email.text, login_password.text)
+				print("sing in!", login_email.text, login_password.text)
+
+		LabelButton:
+			id: New_password
+    		text: "[u]Esqueceu sua senha? Obter nova senha![/u]"
+    		markup: True
+    		color: (0,0,1,1)
+			pos_hint: {"top": .4, "right": 1}
+			size_hint: 1,.1
+			on_release: print("Esqueceu a senha!")
+
+		LabelButton:
+			id: New_account
+			text: "[u]Criar nova conta[/u]"
+			markup: True
+			color: (0,0,1,1)
+			pos_hint: {"top": .1, "right": 1}
+			size_hint: 1,.1
+			on_release: app.change_screen("create_screen")
+
+
+
+
+

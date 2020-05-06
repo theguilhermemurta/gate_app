@@ -1,5 +1,6 @@
 #: include kv/contentnavigationdrawer.kv
 #: include kv/itemdrawer.kv
+#: include kv/gatescreen.kv
 #: import utils kivy.utils
 
 <HomeScreen>:
@@ -14,18 +15,19 @@
 	            Screen:
 	            	name: "gate_camera"
 
-	        		FloatLayout:
+
+                	FloatLayout:
 
 						GridLayout:
 							cols: 1
 							size_hint: 1,.8
 							pos_hint: {"top": 1, "right": 1}
 							MDToolbar:
-		                        title: "Gate App"
-		                        elevation: 10
-		                        left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
-		                    BoxLayout:
-		                    	
+					            title: "Gate App"
+					            elevation: 10
+					            left_action_items: [['menu', lambda x: nav_drawer.set_state()]]
+					        BoxLayout:
+					        	
 
 
 						GridLayout:
@@ -42,6 +44,8 @@
 								id: fecha
 								source: "icons/button_fecha.jpg"
 								on_release: app.close_gate()    
+
+
 
 				Screen:
 					name: "config"

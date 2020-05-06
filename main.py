@@ -10,14 +10,13 @@ from kivymd.app import MDApp
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.list import OneLineIconListItem, MDList
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
 from kivy.uix.label import Label 
 from kivy.properties import StringProperty
-from kivymd.uix.dialog import MDDialog
-
 
 
 
@@ -45,6 +44,8 @@ class ImageButton(ButtonBehavior, Image):
 class LabelButton(ButtonBehavior, Label):
     pass
 class ContentNavigationDrawer(BoxLayout):
+    pass
+class GateScreen(BoxLayout):
     pass
 
 

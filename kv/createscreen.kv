@@ -1,45 +1,43 @@
 <CreateScreen>
-	canvas:
-		Color:
-			rgb: utils.get_color_from_hex("#FFFFFF")
-		Rectangle:
-			size: self.size
-			pos: self.pos
 
 	FloatLayout:
-		TextInput:
+
+		MDTextField:
 			id: name
 			hint_text: "Nome completo"
 			multiline: False
-			size_hint: .6, .1
-			pos_hint: {"top": .85, "right": .80}
+			size_hint: .8,.1
+			pos_hint: {"top": .7, "right": .9}
 
-		TextInput:
+		MDTextField:
 			id: email
 			hint_text: "e-mail"
 			multiline: False
-			size_hint: .6, .1
-			pos_hint: {"top": .65, "right": .80}
+			size_hint: .8,.1
+			pos_hint: {"top": .6, "right": .9}
 
-		TextInput:
+		MDTextField:
 			id: password
 			hint_text: "senha"
 			password: True
 			multiline: False
-			size_hint: .6, .1
-			pos_hint: {"top": .45, "right": .80}
+			size_hint: .8,.1
+			pos_hint: {"top": .5, "right": .9}
+
+		MDRaisedButton:
+		    text: "Criar Conta"
+		    pos_hint: {"top": .4, "right": .9}
+		    size_hint: .8,.08
+		    on_release:
+				app.my_firebase.sign_up(name.text, email.text, password.text)
+				print("Conta criada!", email.text, password.text)			
+			
 
 		LabelButton:
-			canvas.before:
-				Color:
-					rgb: utils.get_color_from_hex("#FFA500") if self.state == 'normal' else utils.get_color_from_hex("#FF8C00")
-				Rectangle:
-					size: self.size
-					pos: self.pos
-			text: "[u]Criar conta![/u]"
+			text: "[u]Fazer login em conta existente![/u]"
 			markup: True
-			size_hint: .3, .1
-			pos_hint: {"top": .2, "right": .65}
+			size_hint: 1, .1
+			color: (0,0,1,1)
+			pos_hint: {"top": .1, "right": 1}
 			on_release:
-				app.my_firebase.sign_up(name.text, email.text, password.text)
-				print("Conta criada!", email.text, password.text)
+				app.change_screen("login_screen")
